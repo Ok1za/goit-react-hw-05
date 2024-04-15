@@ -1,0 +1,39 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.item {
+    margin-bottom: 20px;
+}
+
+.link {
+    color: #333;
+    text-decoration: none;
+}
+
+.link:hover {
+    color: #0271e9;
+}
+
+.image {
+    width: 100px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.title {
+    font-size: 18px;
+    margin-bottom: 5px;
+}

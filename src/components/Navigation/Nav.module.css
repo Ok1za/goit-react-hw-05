@@ -1,0 +1,15 @@
+.navigation {
+    background-color: rgb(249, 174, 36);
+    padding: 16px;
+}
+
+.link {
+    text-decoration: none;
+    color: white;
+    margin-right: 20px;
+}
+
+.link:hover {
+    text-decoration: underline;
+    color: rgb(27, 0, 0);
+}

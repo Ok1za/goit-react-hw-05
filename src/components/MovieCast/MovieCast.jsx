@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
 import styles from "./MovieCast.module.css";
 
 const MovieCast = () => {
@@ -43,10 +42,6 @@ const MovieCast = () => {
             ))}
         </ul>
     );
-};
-
-MovieCast.propTypes = {
-    movieId: PropTypes.number.isRequired,
 };
 
 export default MovieCast;

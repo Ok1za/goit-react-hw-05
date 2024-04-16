@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
 import styles from "./MovieReviews.module.css";
 
 const MovieReviews = () => {
@@ -38,10 +37,6 @@ const MovieReviews = () => {
             ))}
         </ul>
     );
-};
-
-MovieReviews.propTypes = {
-    movieId: PropTypes.number.isRequired,
 };
 
 export default MovieReviews;

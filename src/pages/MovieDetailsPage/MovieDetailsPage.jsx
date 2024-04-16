@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
@@ -12,7 +12,7 @@ const MovieDetailsPage = () => {
     const [showReviews, setShowReviews] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const backBtnRef = useRef();
+    const [fromPath, setFromPath] = useState(null);
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -35,6 +35,12 @@ const MovieDetailsPage = () => {
         fetchMovieDetails();
     }, [movieId]);
 
+    useEffect(() => {
+        if (location.state && location.state.from) {
+            setFromPath(location.state.from.pathname);
+        }
+    }, [location.state]);
+
     const handleToggleCast = () => {
         setShowCast(!showCast);
         setShowReviews(false);
@@ -46,16 +52,16 @@ const MovieDetailsPage = () => {
     };
 
     const handleGoBack = () => {
-        if (location.state && location.state.from) {
-            navigate(location.state.from.pathname);
+        if (fromPath) {
+            navigate(fromPath);
         } else {
-            navigate("/");
+            navigate("/movies");
         }
     };
 
     return (
         <div className={styles.container}>
-            <button onClick={handleGoBack} ref={backBtnRef}>
+            <button onClick={handleGoBack}>
                 Go back
             </button>
             {movieDetails ? (

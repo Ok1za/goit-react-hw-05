@@ -9,35 +9,41 @@ const MoviesPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
     const [params, setParams] = useSearchParams();
+    const query = params.get("query");
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
+        if (!query) return;
+
+        setIsLoading(true);
+
         const fetchMovies = async () => {
             try {
-                const query = params.get('query') || "";
-                setSearchQuery(query);
-                if (query.trim() !== "") {
-                    const response = await axios.get(
-                        `https://api.themoviedb.org/3/search/movie`,
-                        {
-                            params: {
-                                api_key: "99ff99fb37fec644970f7ead98e7da2c",
-                                language: "en-US",
-                                page: 1,
-                                query: query,
-                            },
-                        }
-                    );
-                    setMovies(response.data.results);
-                } else {
-                    setMovies([]);
-                }
+                const response = await axios.get(
+                    `https://api.themoviedb.org/3/search/movie`,
+                    {
+                        params: {
+                            api_key: "99ff99fb37fec644970f7ead98e7da2c",
+                            language: "en-US",
+                            page: 1,
+                            query: query,
+                        },
+                    }
+                );
+                setMovies(response.data.results);
+                setError(null);
             } catch (error) {
+                setError("Error fetching movies. Please try again.");
                 console.error("Error fetching movies:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         fetchMovies();
-    }, [params]);
+    }, [query]);
 
     const handleSearchChange = (event) => {
         const inputValue = event.target.value;
@@ -66,6 +72,8 @@ const MoviesPage = () => {
                     <button type="submit">Search</button>
                 </form>
             </div>
+            {isLoading && <p>Loading movies...</p>}
+            {error && <p>{error}</p>}
             <MovieList movies={movies} />
         </div>
     );

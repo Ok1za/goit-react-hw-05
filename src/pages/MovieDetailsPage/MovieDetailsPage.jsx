@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
@@ -12,7 +12,11 @@ const MovieDetailsPage = () => {
     const [showReviews, setShowReviews] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const [fromPath, setFromPath] = useState(null);
+    const fromPathRef = useRef(null);
+
+    useEffect(() => {
+    fromPathRef.current = location.state?.from?.pathname || "/movies";
+    }, [location.state]);
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -35,12 +39,6 @@ const MovieDetailsPage = () => {
         fetchMovieDetails();
     }, [movieId]);
 
-    useEffect(() => {
-        if (location.state && location.state.from) {
-            setFromPath(location.state.from.pathname);
-        }
-    }, [location.state]);
-
     const handleToggleCast = () => {
         setShowCast(!showCast);
         setShowReviews(false);
@@ -52,11 +50,7 @@ const MovieDetailsPage = () => {
     };
 
     const handleGoBack = () => {
-        if (fromPath) {
-            navigate(fromPath);
-        } else {
-            navigate("/movies");
-        }
+        navigate(fromPathRef.current);
     };
 
     return (

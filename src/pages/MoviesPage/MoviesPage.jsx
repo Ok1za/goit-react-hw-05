@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import MovieList from "../../components/MovieList/MovieList";
 import styles from "./MoviesPage.module.css";
-import { useSearchParams } from "react-router-dom";
 
 const MoviesPage = () => {
     const [movies, setMovies] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
     const [params] = useSearchParams();
 
     useEffect(() => {
@@ -34,29 +35,10 @@ const MoviesPage = () => {
     }, [params]);
 
     useEffect(() => {
-        const fetchMoviesBySearch = async () => {
-            try {
-                const response = await axios.get(
-                    `https://api.themoviedb.org/3/search/movie`,
-                    {
-                        params: {
-                            api_key: "99ff99fb37fec644970f7ead98e7da2c",
-                            language: "en-US",
-                            page: 1,
-                            query: searchQuery,
-                        },
-                    }
-                );
-                setMovies(response.data.results);
-            } catch (error) {
-                console.error("Error fetching movies by search:", error);
-            }
-        };
-
-        if (searchQuery) {
-            fetchMoviesBySearch();
-        }
-    }, [searchQuery]);
+        const query = searchQuery.trim();
+        params.set('query', query);
+        navigate(`?query=${query}`);
+    }, [searchQuery, params, navigate]);
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
